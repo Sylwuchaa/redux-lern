@@ -5,13 +5,13 @@ import './App.css';
 import { connect } from "react-redux";
 import { contactsFetched } from "./actions";
 class App extends Component {
-  // state = {
-  //   contacts: [],
-  // };
+  state = {
+    contacts: [],
+  };
   componentDidMount = () => {
     fetch("https://randomuser.me/api/?format=json&results=10")
       .then(res => res.json())
-      .then(json => this.props.contactsFetched(json.results));
+      .then(json => this.props.contactsFetched(json.results ));
    }
   render() {
     return (
