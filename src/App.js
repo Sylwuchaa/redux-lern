@@ -1,28 +1,30 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import {ContactsList} from './ContactsList';
 import './App.css';
 
+import { connect } from "react-redux";
+import { contactsFetched } from "./actions";
 class App extends Component {
+  // state = {
+  //   contacts: [],
+  // };
+  componentDidMount = () => {
+    fetch("https://randomuser.me/api/?format=json&results=10")
+      .then(res => res.json())
+      .then(json => this.props.contactsFetched(json.results));
+   }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+      <ContactsList contacts={this.props.contacts} />
+     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    contacts: state.contacts // (1)
+  }
+};
+const mapDispatchToProps = { contactsFetched }; // (2)
+
+export const AppContainer = connect(mapStateToProps, mapDispatchToProps)(App); // (3)
